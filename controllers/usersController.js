@@ -9,14 +9,14 @@ const { check, validationResult } = require('express-validator');
 
 
 module.exports = {
-    getAllUsers: async (req, res) => {
+    getUser: async (req, res) => {
         try {
-            let users = await User.find().populate('movies.movie') // populate method lets us go
+            let user = await User.findById(req.user.id).populate('movies.movie') // populate method lets us go
             // to movies table and take the movie from there 
             //in the User model we must have the movie model id as type: mongoose.Schema.Types.ObjectId
             // and with ref: 'tableName'
 
-            return res.status(200).json({ users })
+            return res.status(200).json({ user })
 
         } catch (error) {
             res.status(500).json({ msg: error.message })
@@ -111,33 +111,32 @@ module.exports = {
 
 
     login: async (req, res) => {
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
         const { email, password } = req.body;
 
-        //searchong for user - getting back array with object
+        //serching for user - getting back array with object
         let users = await User.find({ email });
         if (users.length === 0) {
-            console.log(1)
-
-            return res.status(401).json({ msg: 'Auth failed' })
+            return res.status(401).json({ msg: 'Incorrect username or password' })
         }
 
         //pulling out the user from the users array
         const [user] = users
 
-        console.log("this is the user id that logged in!")
-        console.log(user._id)
-
-
-
-        // comapre user hash password - (realPassword, dbPassword, (error,result=equalsOrNot)=>{})
+        // comapre user hash password - (realPassword, dbPassword, (error,result is ifThePasswordEqualsOrNot)=>{})
         bcrypt.compare(password, user.password, (error, result) => {
             if (error) {
-                return res.status(401).json({ msg: 'Auth failed' })
+                return res.status(401).json({ msg: 'Incorrect username or password' })
             }
 
             if (result) {
                 //This sign function takes 3 argunemts - 1. payload as object(what we want to send to the client)
-                // 2.key (password of my app)
+                // 2.key (general password of my app)
                 //3. object of options {}
 
                 const payload = {
@@ -160,11 +159,8 @@ module.exports = {
 
 
             }
-            console.log(3)
 
-
-            return res.status(401).json({ msg: 'Auth failed' })
-
+            return res.status(401).json({ msg: 'Incorrect username or password' })
 
         })
     },

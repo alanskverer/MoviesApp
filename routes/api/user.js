@@ -8,7 +8,7 @@ const checkAuth = require('../../middelwares/checkAuth')
 const { body, validationResult } = require('express-validator');
 
 const {
-    getAllUsers,
+    getUser,
     createUser,
     login,
     addMovie,
@@ -24,7 +24,8 @@ router.use((req, res, next) => {
     next();
 });
 
-router.get('/', getAllUsers);
+router.get('/', checkAuth, getUser);
+
 
 //users/addmovie
 router.post('/addmovie', checkAuth, addMovie);
@@ -32,7 +33,13 @@ router.get('/getusermovies', checkAuth, getAllUserMovies);
 router.get('/getallmovies', getAllMovies);
 router.delete('/removemovie', checkAuth, removeMovie);
 
-router.post('/login', login);
+router.post('/login',
+    body('email', 'Please include a valid email').isEmail(),
+    body(
+        'password',
+        'Please enter your password '
+    ).isLength({ min: 6 }),
+    login);
 router.post('/',
     body('name', 'Name is required').notEmpty(),
     body('email', 'Please include a valid email').isEmail(),
