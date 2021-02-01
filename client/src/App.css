@@ -36,12 +36,18 @@ img {
 
 /* Utilities */
 .container {
-  max-width: 1100px;
+  /* max-width: 1100px; */
   margin: auto;
   overflow: hidden;
   padding: 0 2rem;
   margin-top: 6rem;
   margin-bottom: 3rem;
+}
+.container .movie {
+  width: 300px;
+}
+.container .movie img {
+  max-width: 100%;
 }
 
 /* Text Styles*/
@@ -573,5 +579,8 @@ button {
   .post a,
   .post button {
     padding: 0.3rem 0.4rem;
+  }
+  .movies {
+    background-color: red;
   }
 }
