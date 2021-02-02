@@ -3,7 +3,11 @@ import style from '../Movies/movies.module.css'
 import Movie from './Movie';
 import { setAlert } from '../../actions/alert';
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types';
+
+
 const Movies = ({ setAlert }) => {
+
 
 
 
@@ -18,7 +22,6 @@ const Movies = ({ setAlert }) => {
             .then((res) => res.json())
             .then((data) => {
                 setMovies(data.results);
-
             })
 
 
@@ -79,9 +82,9 @@ const Movies = ({ setAlert }) => {
     )
 }
 
-// const mapStateToProps = state => ({
-//     isAuthenticated: state.auth.isAuthenticated
-// });
+Movies.propTypes = {
+    setAlert: PropTypes.func.isRequired
+};
+
 
 export default connect(null, { setAlert })(Movies)
-// export default connect(mapStateToProps, { setAlert })(Movies)

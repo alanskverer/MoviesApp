@@ -30,7 +30,7 @@ module.exports = {
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-        //console.log(req.file)
+
         // const { path: image } = req.file;
         // if I want to upload send a file should send in body 
         //as form-data and in the image key name call it image and in the headers content-type x-www-form-urlencoded
@@ -61,11 +61,11 @@ module.exports = {
                         name,
                         email,
                         password: hash,
-                        // categoryId,
+
                         // image: image.replace('\\', '/')
                     }
                 )
-                // console.log(user)
+
                 user.save().then((savedUser) => {
 
 
@@ -164,27 +164,35 @@ module.exports = {
 
         })
     },
+
+
     addMovie: async (req, res) => {
 
-        const { title, description } = req.body;
+        const { title, poster_path, overview, vote_average } = req.body;
+
 
 
         let movieFound = await Movie.findOne({ title: title });
         let user = await User.findById(req.user.id);
-        // console.log(user.name + " this is the username")
+
 
         if (movieFound) {
 
-            user.movies.forEach(element => {
-                if (element.id == movieFound.id) {
+            try {
+                user.movies.forEach(element => {
+                    if (element.movie == movieFound.id) {
 
-                    return res.status(400).json({ msg: "movie is already in the users list", movieFound })
-                }
-            });
+                        return res.status(200).json({ msg: "movie is in already in the watchlist", savedUser })
+                    }
+                });
+                user.movies.unshift({ movie: movieFound.id });
+                let savedUser = await user.save();
+                return res.status(200).json({ msg: "movie is on db already! added movie to user list", savedUser })
 
-            user.movies.unshift({ movie: movieFound.id });
-            let savedUser = await user.save();
-            return res.status(200).json({ msg: "movie is on db already! added movie to user list", savedUser })
+            } catch (error) {
+                return res.status(500).json({ msg: 'failed' })
+            }
+
         }
 
 
@@ -192,17 +200,19 @@ module.exports = {
             const newMovie = new Movie({
 
                 title,
-                description
+                poster_path,
+                overview,
+                vote_average
+
             })
+
             const movieSaved = await newMovie.save();
             user.movies.unshift({ movie: movieSaved.id });
             let savedUser = await user.save();
-            console.log("This is the user after daving the movie: ")
-            console.log(savedUser)
-            return res.status(200).json({ msg: "added movie to db and to the user list", savedUser })// savedUser)
+
+            return res.status(200).json({ msg: "added movie to db and to the user list", savedUser })
 
         } catch (error) {
-            console.log(error.message)
             return res.status(500).json({ msg: 'failed' })
 
 
@@ -222,8 +232,6 @@ module.exports = {
             let movieToRemove = await Movie.findOne({ title: title });
             let user = await User.findById(req.user.id);
 
-            console.log("movie id to remove:")
-            console.log(movieToRemove.id)
 
             const removeIndex = user.movies
                 .map(movie => movie.movie.toString())

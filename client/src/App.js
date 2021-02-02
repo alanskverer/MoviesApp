@@ -4,6 +4,7 @@ import Navbar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
 import Login from './components/auth/Login';
 import Movies from './components/Movies/Movies';
+import Watchlist from './components/Movies/Watchlist';
 import Register from './components/auth/Register';
 import Alert from './components/layout/Alert';
 import PrivateRoute from './components/routing/PrivateRoute';
@@ -44,6 +45,7 @@ const App = () => {
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
               <PrivateRoute exact path="/movies" component={Movies} />
+              <PrivateRoute exact path="/watchlist" component={Watchlist} />
             </Switch>
           </section>
         </Fragment>

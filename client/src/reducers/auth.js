@@ -24,8 +24,6 @@ function counterReducer(state = initialState, action) {
         case REGISTER_SUCCESS:
         case LOGIN_SUCCESS:
             localStorage.setItem('token', payload.token);
-            console.log("token is:")
-            console.log(payload.token)
             return {
                 ...state,
                 ...payload,

@@ -7,8 +7,18 @@ const Movieschema = mongoose.Schema({
         type: String,
         required: true
     },
-    description: {
+    poster_path: {
         type: String,
+        required: true,
+
+    },
+    overview: {
+        type: String,
+        required: true,
+
+    },
+    vote_average: {
+        type: Number,
         required: true,
 
     },
@@ -16,4 +26,6 @@ const Movieschema = mongoose.Schema({
 
 })
 
-module.exports = Movie = mongoose.model('movie', Movieschema); 
+module.exports = Movie = mongoose.model('movie', Movieschema);
+
+// title, poster_path, overview, vote_average

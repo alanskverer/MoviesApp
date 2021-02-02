@@ -67,9 +67,6 @@ const Login = ({ login, isAuthenticated }) => {
     </Fragment>
 
 }
-// const mapStateToProps = (state) => ({
-//      //counter: state.counter
-// })
 
 
 Login.propTypes = {

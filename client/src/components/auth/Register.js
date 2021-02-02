@@ -25,7 +25,6 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
         e.preventDefault();
         if (password !== password2) {
             setAlert('Passwords do not match', 'danger');
-            // console.log("passwords do no match");
         } else {
             register(formData)
         }
@@ -59,10 +58,6 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                     value={email}
                     onChange={onChange}
                 />
-                <small className="form-text"
-                >This site uses Gravatar so if you want a profile image, use a
-            Gravatar email</small
-                >
             </div>
             <div className="form-group">
                 <input
