@@ -4,6 +4,8 @@ import Movie from './Movie';
 import { setAlert } from '../../actions/alert';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
+
 
 
 const Movies = ({ setAlert }) => {
@@ -13,7 +15,8 @@ const Movies = ({ setAlert }) => {
 
     const [movies, setMovies] = useState([]);
     const [search, setSearch] = useState('');
-    const moviesByRatingURL = `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_API_KEYY}&language=en-US&page=1`
+    const [numOfPage, setNumOfPage] = useState(1);
+    const moviesByRatingURL = `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_API_KEYY}&language=en-US&page=${numOfPage}`
     const moviesBySearchWord = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_API_KEYY}&language=en-US&query=${search}&page=1&include_adult=true`
 
 
@@ -53,6 +56,11 @@ const Movies = ({ setAlert }) => {
         setSearch(e.target.value)
 
     }
+    let pageSelectorBtn = numOfPage === 1 ? <Button style={{ margin: 20 }} onClick={() => setNumOfPage(numOfPage + 1)}>next page</Button>
+        :
+        <div><Button onClick={() => setNumOfPage(numOfPage - 1)}>previous page</Button>
+            <Button style={{ margin: 20 }} onClick={() => setNumOfPage(numOfPage + 1)}>next page</Button>
+        </div>
 
 
 
@@ -77,6 +85,9 @@ const Movies = ({ setAlert }) => {
                 {movies.length > 0 && movies.map((movie) => (
                     <Movie key={movie.id} {...movie} />
                 ))}
+                {pageSelectorBtn}
+                {/* <button onClick={() => setNumOfPage(numOfPage + 1)}>next page</button> */}
+
             </div>
         </Fragment>
     )
