@@ -24,7 +24,7 @@ const app = express();
 //     useCreateIndex: true
 // }
 // );
-mongoose.connect("mongodb+srv://alanskverer:alanskverer@mernapp.mss9y.mongodb.net/MernApp?retryWrites=true&w=majority", {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://alanskverer:alanskverer@mernapp.mss9y.mongodb.net/MernApp?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
