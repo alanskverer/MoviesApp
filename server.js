@@ -48,6 +48,10 @@ mongoose.connection.on('connected', () => {
 app.use(express.json({ extended: false }))
 
 
+
+
+
+
 //Allow cors
 // app.use((req, res, next) => {
 //     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -83,6 +87,11 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     });
 }
+
+
+
+
+
 
 
 
