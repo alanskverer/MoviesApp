@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const userRoutes = require('./routes/api/user');
 const movieRoutes = require('./routes/api/movie');
 const path = require('path');
-const { send } = require('process');
 
 
 // const connectDB = require('./config/db');
@@ -25,7 +24,7 @@ const app = express();
 //     useCreateIndex: true
 // }
 // );
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://alanskverer:alanskverer@mernapp.mss9y.mongodb.net/MernApp?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://alanskverer:alanskverer@mernapp.mss9y.mongodb.net/MernApp?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
@@ -73,9 +72,7 @@ app.use(express.json({ extended: false }))
 app.use('/users', userRoutes);
 app.use('/movies', movieRoutes);
 
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-});
+
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
