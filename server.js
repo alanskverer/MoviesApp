@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/api/user');
 const movieRoutes = require('./routes/api/movie');
+const path = require('path');
 
 const checkAuth = require('./middelwares/checkAuth')
 
@@ -55,26 +56,21 @@ app.use((req, res, next) => {
 
 
 //Define routes
-app.get('/', (req, res) => res.json({ msg: "hey there" }))
 app.use('/users', userRoutes);
 app.use('/movies', movieRoutes);
 
 
-//Page not found / no route 
+// Serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+    // Set static folder
+    app.use(express.static('client/build'));
 
-app.use((req, res, next) => {
-    const error = new Error('Not found');
-    error.status = 404;
-    next(error)
-})
-app.use((error, req, res, next) => {
-    res.status(error.status || 500);
-    res.json({
-        error: {
-            msg: error.message
-        }
-    })
-})
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    });
+}
+
+
 
 const PORT = process.env.PORT || 5000;
 
