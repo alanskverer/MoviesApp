@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const userRoutes = require('./routes/api/user');
 const movieRoutes = require('./routes/api/movie');
 const path = require('path');
+const { send } = require('process');
 
 
 // const connectDB = require('./config/db');
@@ -32,7 +33,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://alanskverer:alanskver
 );
 
 mongoose.connection.on('connected', () => {
-    console.log('MongoDB Connected')
+    console.log('MongoDB Connectedd')
 })
 
 
@@ -72,6 +73,9 @@ app.use(express.json({ extended: false }))
 app.use('/users', userRoutes);
 app.use('/movies', movieRoutes);
 
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+});
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
